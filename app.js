@@ -1,8 +1,11 @@
 const express = require('express')
+var cors = require('cors')
 const app = express()
 const port = 3000
 
-const stockInfo = StockInfo[
+app.use(cors())
+
+const stockInfo = [
   {
     Symbol: 'TSLA',
     Upper: 1500,
@@ -22,13 +25,18 @@ const stockInfo = StockInfo[
     Symbol: 'FUV',
     Upper: 10,
     Lower: 5,
-  },
+  }
 
 ];
 
 app.get('/', (req, res) => {
-  res.send(stockInfo)
+  // console.log("No params");
+  // console.log(req.query);
+  let stock = stockInfo.filter(item => item.Symbol === req.query.symbol);
+  // console.log(stock)
+  res.send(stock)
 })
+
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
