@@ -19,26 +19,20 @@ app.use(cors())
 
 //  -------  Connect to MongoDB database  --------
 
-// console.log a list of all curent databases open on MongoDB
-// async function listDatabases(client){
-//   databasesList = await client.db().admin().listDatabases();
-
-//   console.log(databasesList);
-//   databasesList.databases.forEach(db => console.log(` - ${db.name}`));
-// };
 
 
 // make a call to the MongoDB database and return all the information on the given stock 
 async function findListingByName(client, stocks) {
   const cursor = await client.db('MyPursuit').collection('stockData').find({symbol: { $in : stocks }}) ;
   const results = await cursor.toArray();
-  if (results) {
-      console.log(`Found a listing in the collection with the symbol '${stocks}':`);
-      results.forEach(result => console.log(result.symbol))
-  } else {
-      console.log(`No listings found with the symbol '${stocks}'`);
-      console.log(results);
-  }
+  // if (results) {
+  //     console.log(`Found a listing in the collection with the symbol '${stocks}':`);
+  //     results.forEach(result => console.log(result))
+  //     // results.forEach(result => console.log(result.symbol))
+  //   } else {
+  //     console.log(`No listings found with the symbol '${stocks}'`);
+  //     console.log(results);
+  // }
   return results
 }
 
@@ -66,27 +60,42 @@ async function main(symbol){
   
 }
 
-//Call the main function to retriev the data 
-let symbol = main(["TSLA", 'AMD', "FUV"]).catch(console.error);
-console.log(`I found ${symbol} in the database`)
 
 
-// let rawData = fs.readFileSync('data.json');
-// console.log(rawData);
-	
 
-// let Actions = ['Buy', 'Sell', 'Hold'];
+
+
+//  ------- Listen on port 3000 and handle all requests   --------
+
+//["TSLA", 'AMD', "FUV"]
 
 
 // Listing for a get request and responding with data on the requested Ticker Symbol. 
-app.get('/', (req, res) => {
+app.get('/', async (req, res) => {
   // console.log("No params");
   // console.log(data);
   // let stock = stockInfo.filter(item => item.Symbol === req.query.symbol);
   // res.send(stock)
+  // console.log(req.query.stocks)
 
-  let stocks = main(req.query.stocks).catch(console.error);
-  res.send(stocks)
+  let rawStocksData = await main(req.query.stocks).catch(console.error);
+  let returnStockInfo = [];
+  let stocks = rawStocksData.forEach(stock => {
+    let stockObject =  {
+      symbol: stock.symbol,
+      marketOpen: stock.regularMarketOpen,
+      marketClose: stock.regularMarketPreviousClose,
+      sharesShort: stock.sharesShort,
+      totalCash: stock.totalCash,
+      marketCap: stock.marketCap,
+      revenue: stock.revenue,
+      dividendsPerShare: stock.dividendsPerShare,
+    }
+    returnStockInfo.push(stockObject);
+  })
+  console.log(returnStockInfo)
+  // res.send(req.query.stocks)
+  res.send(returnStockInfo)
 })
 
 
