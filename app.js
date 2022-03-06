@@ -40,15 +40,15 @@ async function findUserStockData(client, username) {
     .collection("userStockData")
     .findOne({ username: username });
 
-  if (results) {
-    console.log(
-      `Found a listing in the collection with the symbol '${username}':`
-    );
-    console.log(results);
-  } else {
-    console.log(`No listings found with the username '${username}'`);
-    console.log(results);
-  }
+  // if (results) {
+  //   console.log(
+  //     `Found a listing in the collection with the symbol '${username}':`
+  //   );
+  //   console.log(results);
+  // } else {
+  //   console.log(`No listings found with the username '${username}'`);
+  //   console.log(results);
+  // }
   return results;
 }
 
@@ -65,7 +65,6 @@ async function main(username) {
 
     // get userStockData using the provided username
     let userStockData = await findUserStockData(client, username);
-    console.log(userStockData);
     // make symbols array from data stored in userStockData
     let symbols = [];
     userStockData.stocksData.forEach((stock) => symbols.push(stock.symbol));
@@ -97,14 +96,17 @@ app.get("/", async (req, res) => {
     //get stockdata and userStockData form mongodb using the provided Username
     let rawStocksData = await main(req.query.username).catch(console.error);
 
+    // combine all the stockdata with userStockData into an array of objects
     let returnStockObject = [];
     for (i = 0; i < rawStocksData.stockData.length; i++) {
       let stockData = rawStocksData.stockData[i];
       let userStockData = rawStocksData.userStockData.stocksData.filter(
         (stock) => {
-          stock.symbol === stockData.symbol;
+          return stock.symbol === stockData.symbol;
         }
       );
+
+      // stock and user data object
       let stockObject = {
         StockData: {
           symbol: stockData.symbol,
@@ -117,18 +119,19 @@ app.get("/", async (req, res) => {
           dividendsPerShare: stockData.dividendsPerShare,
         },
         userStockData: {
-          symbol: userStockData.symbol,
-          toHighPrice: userStockData.toHighPrice,
-          highPrice: userStockData.highPrice,
-          lowPrice: userStockData.lowPrice,
-          toLowPrice: userStockData.toLowPrice,
+          symbol: userStockData[0].symbol,
+          toHighPrice: userStockData[0].toHighPrice,
+          highPrice: userStockData[0].highPrice,
+          lowPrice: userStockData[0].lowPrice,
+          toLowPrice: userStockData[0].toLowPrice,
         },
       };
+
+      // push the stockObject into the array being sent to the front end
       returnStockObject.push(stockObject);
     }
 
-    console.log(returnStockObject);
-    // res.send(req.query.stocks)
+    //Send stockobject to the aplications front end
     res.send(returnStockObject);
   } catch (e) {
     console.error(e);
