@@ -1,0 +1,29 @@
+[
+    {
+        "username": "fethanerrier",
+        "stocksData": [
+            {
+                "symbol": "TSLA",
+                "toHighPrice": "1200",
+                "highPrice": "1000",
+                "lowPrice": "800",
+                "toLowPrice": "600"         
+            },
+            {
+                "symbol": "FUV",
+                "toHighPrice": "12",
+                "highPrice": "8",
+                "lowPrice": "4",
+                "toLowPrice": "2"   
+            },
+            {
+                "symbol": "AMD",
+                "toHighPrice": "180",
+                "highPrice": "120",
+                "lowPrice": "80",
+                "toLowPrice": "72"   
+            }
+        ]
+    }
+ 
+ ]
