@@ -1,5 +1,6 @@
 //  -------  imports  --------
 const express = require("express");
+const dotenv = require("dotenv").config();
 // const data = require('./data')
 // const fs = require('fs');
 // const path = require('path');
@@ -54,8 +55,8 @@ async function findUserStockData(client, username) {
 
 // Connect to the Mongo Client and retrieve the data
 async function main(username) {
-  const uri =
-    "mongodb+srv://fethanerrier:Stronger88@cluster0.664pc.mongodb.net/MYPURSUIT?retryWrites=true&w=majority";
+  //get URI form envrioment variable file (.env)
+  const uri = process.env.MONGODB_URI;
 
   const client = new MongoClient(uri);
 
