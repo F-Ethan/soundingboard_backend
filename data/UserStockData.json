@@ -1,29 +1,63 @@
 [
-    {
-        "username": "fethanerrier",
-        "stocksData": [
-            {
-                "symbol": "TSLA",
-                "toHighPrice": "1200",
-                "highPrice": "1000",
-                "lowPrice": "800",
-                "toLowPrice": "600"         
-            },
-            {
-                "symbol": "FUV",
-                "toHighPrice": "12",
-                "highPrice": "8",
-                "lowPrice": "4",
-                "toLowPrice": "2"   
-            },
-            {
-                "symbol": "AMD",
-                "toHighPrice": "180",
-                "highPrice": "120",
-                "lowPrice": "80",
-                "toLowPrice": "72"   
-            }
-        ]
-    }
- 
- ]
+  {
+    "username": "fethanerrier",
+    "stocksData": [
+      {
+        "symbol": "TSLA",
+        "toHighPrice": "1200",
+        "highPrice": "1000",
+        "lowPrice": "800",
+        "toLowPrice": "600"
+      },
+      {
+        "symbol": "FUV",
+        "toHighPrice": "12",
+        "highPrice": "8",
+        "lowPrice": "4",
+        "toLowPrice": "2"
+      },
+      {
+        "symbol": "AMD",
+        "toHighPrice": "180",
+        "highPrice": "120",
+        "lowPrice": "80",
+        "toLowPrice": "72"
+      },
+      {
+        "symbol": "AAPL",
+        "toHighPrice": "182.94",
+        "highPrice": "170",
+        "lowPrice": "160.66",
+        "toLowPrice": "140"
+      },
+      {
+        "symbol": "IBM",
+        "toHighPrice": "146.37",
+        "highPrice": "130",
+        "lowPrice": "126.44",
+        "toLowPrice": "113.73"
+      },
+      {
+        "symbol": "MSFT",
+        "toHighPrice": "349.67",
+        "highPrice": "300",
+        "lowPrice": "288.53",
+        "toLowPrice": "224.26"
+      },
+      {
+        "symbol": "FB",
+        "toHighPrice": "384.33",
+        "highPrice": "300",
+        "lowPrice": "200.79",
+        "toLowPrice": "189.05"
+      },
+      {
+        "symbol": "LMND",
+        "toHighPrice": "115.85",
+        "highPrice": "60",
+        "lowPrice": "30",
+        "toLowPrice": "18.12"
+      }
+    ]
+  }
+]

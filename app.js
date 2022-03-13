@@ -109,7 +109,7 @@ app.get("/", async (req, res) => {
 
       // stock and user data object
       let stockObject = {
-        StockData: {
+        stockData: {
           symbol: stockData.symbol,
           marketOpen: stockData.regularMarketOpen,
           marketClose: stockData.regularMarketPreviousClose,
@@ -119,13 +119,7 @@ app.get("/", async (req, res) => {
           revenue: stockData.revenue,
           dividendsPerShare: stockData.dividendsPerShare,
         },
-        userStockData: {
-          symbol: userStockData[0].symbol,
-          toHighPrice: userStockData[0].toHighPrice,
-          highPrice: userStockData[0].highPrice,
-          lowPrice: userStockData[0].lowPrice,
-          toLowPrice: userStockData[0].toLowPrice,
-        },
+        userStockData: userStockData[0],
       };
 
       // push the stockObject into the array being sent to the front end
