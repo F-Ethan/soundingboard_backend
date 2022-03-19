@@ -1,7 +1,8 @@
 //  -------  imports  --------
 const express = require("express");
 const dotenv = require("dotenv").config();
-const { userStockData } = require("./routs/getUserstockData");
+const { userStockData } = require("./routs/getUserStockData");
+const { addUserStockData } = require("./routs/addUserStockData");
 var cors = require("cors");
 const { Console } = require("console");
 
@@ -16,13 +17,22 @@ app.use(cors());
 
 // Listing for a get request and responding with data on the requested Ticker Symbol.
 app.get("/", async (req, res) => {
-  let response = await userStockData(req, res);
-  res.send(response);
+  try {
+    let response = await userStockData(req, res);
+    res.send(response);
+  } catch (e) {
+    console.error(e);
+  }
 });
 
 app.get("/newStock", async (req, res) => {
   // let response = await userStockData(req, res);
-  res.send(" my response");
+  try {
+    let response = await addUserStockData(req, res);
+    res.send(response);
+  } catch (e) {
+    console.error(e);
+  }
 });
 
 // Start the Express aplication and start listening on port 3000
