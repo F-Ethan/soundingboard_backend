@@ -7,16 +7,30 @@ var axios = require("axios").default;
 
 const { MongoClient } = require("mongodb");
 
+// Send the Yahoo stock data object to mongodb
+async function addOneObject(client, stockData) {
+  try {
+    const result = await client
+      .db("MyPursuit")
+      .collection("stockData")
+      .insertOne(stockData);
+    console.log(`Inserted Document '${stockData.symbol}'`);
+    console.log(result);
+  } catch (e) {
+    console.error(e);
+  }
+}
+
 // make a call to the MongoDB database and return the information on the given stock
 async function findOneStockData(client, stock) {
-  const result; 
   // Check if this stock is already represented in the database
-  result = await client
+  rawResult = await client
     .db("MyPursuit")
     .collection("stockData")
     .findOne({ symbol: stock });
   // If no result found in database check Yahoo Finance
-  if (!result) {
+  if (!rawResult) {
+    // Obect containing the parmaaters being sent via a get request to Yahoo finance
     var options = {
       method: "GET",
       url: "https://yh-finance.p.rapidapi.com/market/v2/get-quotes",
@@ -27,20 +41,43 @@ async function findOneStockData(client, stock) {
       },
     };
 
-    axios
+    // Sending the request and saving the respons as rawResult
+    rawResult = await axios
       .request(options)
       .then(function (response) {
-        console.log("this data comes from yahoo finance");
-        console.log(response.data.quoteResponse.result[0]);
-        result = response.data.quoteResponse.result[0];
+        // console.log("this data comes from yahoo finance");
+        // console.log(response.data.quoteResponse.result[0]);
+        return response.data.quoteResponse.result[0];
       })
       .catch(function (error) {
         console.error(error);
       });
-  } else {
-    console.log(`No listings found with the symbol '${stock}'`);
-    console.log(result);
+
+    console.log(rawResult);
+    if (rawResult) {
+      // Add the new stock data to MongoDB for future tracking
+      await addOneObject(client, rawResult);
+    } else {
+      result = {
+        errorMessage:
+          "Sorry there seems to be something wrong, Please verify that you have the right ticker symbol and try again. If the issue persists please reach out to constumer serviece.",
+        resultStatus: 404,
+      };
+    }
   }
+
+  //parsing out rawResult to match the objects being sent to the front end.
+  result = {
+    symbol: rawResult.symbol,
+    marketOpen: rawResult.regularMarketOpen,
+    marketClose: rawResult.regularMarketPreviousClose,
+    sharesShort: rawResult.sharesShort,
+    totalCash: rawResult.totalCash,
+    marketCap: rawResult.marketCap,
+    revenue: rawResult.revenue,
+    dividendsPerShare: rawResult.dividendsPerShare,
+  };
+  // console.log(result);
   return result;
 }
 

@@ -19,7 +19,18 @@ app.use(cors());
 app.get("/", async (req, res) => {
   try {
     let response = await userStockData(req, res);
-    res.send(response);
+
+    // Check if there is a error message in the response object
+    // if there is set the error code and send the error message to the front end.
+    if (response.resultStatus) {
+      console.log(`Error status '${response.resultStatus}'`);
+      console.log(response);
+      res.status(response.resultStatus);
+      res.send(response.errorMessage);
+    } else {
+      // Send the response Object to the front end.
+      res.send(response);
+    }
   } catch (e) {
     console.error(e);
   }
@@ -29,7 +40,18 @@ app.get("/newStock", async (req, res) => {
   // let response = await userStockData(req, res);
   try {
     let response = await addUserStockData(req, res);
-    res.send(response);
+
+    // Check if there is a error message in the response object
+    // if there is set the error code and send the error message to the front end.
+    if (response.resultStatus) {
+      console.log(`Error status '${response.resultStatus}'`);
+      console.log(response);
+      res.status(response.resultStatus);
+      res.send(response.errorMessage);
+    } else {
+      // Send the response Object to the front end.
+      res.send(response);
+    }
   } catch (e) {
     console.error(e);
   }
