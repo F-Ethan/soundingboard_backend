@@ -25,23 +25,6 @@ async function findStockData(client, stocks) {
   return results;
 }
 
-// make a call to the MongoDB database and return the information on the given stock
-async function findOneStockData(client, stock) {
-  const results = await client
-    .db("MyPursuit")
-    .collection("stockData")
-    .findOne({ symbol: stock });
-  // if (results) {
-  //     console.log(`Found a listing in the collection with the symbol '${stocks}':`);
-  //     results.forEach(result => console.log(result))
-  //     // results.forEach(result => console.log(result.symbol))
-  //   } else {
-  //     console.log(`No listings found with the symbol '${stocks}'`);
-  //     console.log(results);
-  // }
-  return results;
-}
-
 // make a call to the MongoDB database and return all the information on the given stock
 async function findUserStockData(client, username) {
   const results = await client
@@ -95,26 +78,4 @@ async function main(username) {
   }
 }
 
-// Connect to the Mongo Client and retrieve the data
-async function addUserStock(symbol) {
-  //get URI form envrioment variable file (.env)
-  const uri = process.env.MONGODB_URI;
-
-  const client = new MongoClient(uri);
-
-  try {
-    // Connect to the MongoDB cluster
-    await client.connect();
-
-    //get the stockData on the stocks in the symbols array
-    let stockData = await findOneStockData(client, symbol);
-
-    return stockData;
-  } catch (e) {
-    console.error(e);
-  } finally {
-    await client.close();
-  }
-}
-
-module.exports = { main, addUserStock };
+module.exports = { main };

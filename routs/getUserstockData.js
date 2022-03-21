@@ -1,4 +1,4 @@
-const { main } = require("../data/mongodb");
+const { main } = require("../data/getUserStockData");
 
 let userStockData = async (req, res) => {
   try {
