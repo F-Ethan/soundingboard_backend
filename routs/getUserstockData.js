@@ -1,4 +1,5 @@
 const { main } = require("../data/getUserStockData");
+const { makeStockObject } = require("../components/StockObject");
 
 let userStockData = async (req, res) => {
   try {
@@ -15,18 +16,11 @@ let userStockData = async (req, res) => {
         }
       );
 
+      let mystockObject = makeStockObject(stockData);
+
       // stock and user data object
       let stockObject = {
-        stockData: {
-          symbol: stockData.symbol,
-          marketOpen: stockData.regularMarketOpen,
-          marketClose: stockData.regularMarketPreviousClose,
-          sharesShort: stockData.sharesShort,
-          totalCash: stockData.totalCash,
-          marketCap: stockData.marketCap,
-          revenue: stockData.revenue,
-          dividendsPerShare: stockData.dividendsPerShare,
-        },
+        stockData: mystockObject,
         userStockData: userStockData[0],
       };
 

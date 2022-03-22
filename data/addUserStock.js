@@ -3,6 +3,8 @@ const express = require("express");
 const dotenv = require("dotenv").config();
 const { Console } = require("console");
 
+const { makeStockObject } = require("../components/StockObject");
+
 var axios = require("axios").default;
 
 const { MongoClient } = require("mongodb");
@@ -67,16 +69,7 @@ async function findOneStockData(client, stock) {
   }
 
   //parsing out rawResult to match the objects being sent to the front end.
-  result = {
-    symbol: rawResult.symbol,
-    marketOpen: rawResult.regularMarketOpen,
-    marketClose: rawResult.regularMarketPreviousClose,
-    sharesShort: rawResult.sharesShort,
-    totalCash: rawResult.totalCash,
-    marketCap: rawResult.marketCap,
-    revenue: rawResult.revenue,
-    dividendsPerShare: rawResult.dividendsPerShare,
-  };
+  result = makeStockObject(rawResult);
   // console.log(result);
   return result;
 }
